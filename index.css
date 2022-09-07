@@ -15,3 +15,16 @@ body {
   font-family: sans-serif;
   text-shadow: 0px 1px 2px rgba(0, 0, 0, 0.232);
 }
+main {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.appHeader {
+  display: flex;
+  justify-content: space-between;
+}
+.time {
+  align-self: center;
+}
