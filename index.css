@@ -28,3 +28,9 @@ main {
 .time {
   align-self: center;
 }
+.crypto-holder {
+  display: flex;
+}
+.crypto-image {
+  height: 50px;
+}
