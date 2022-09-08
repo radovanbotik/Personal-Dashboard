@@ -54,9 +54,9 @@ const getWeather = async () => {
     `${weatherURL}?lat=${coordsData.latitude}&lon=${coordsData.longitude}&units=metric`
   );
   const data = await resp.json();
+  const { name: city } = data;
   const { main, description, icon } = data.weather[0];
-
-  return { main, description, icon };
+  return { main, description, icon, city };
 };
 
 const updateDOM = async () => {
@@ -81,12 +81,12 @@ const updateDOM = async () => {
     `;
     //update Time DOM
     setInterval(getTime, 1000);
-    //handle user location
 
-    //handle weather
+    //handling weather
     weatherSection.innerHTML = `
     <div class="weather-icon">${weatherData.main}</div>
     <div class="weather-main">${weatherData.description}</div>
+    <div class="weather-description">${weatherData.city}</div>
     <div class="weather-description">${weatherData.icon}</div>
     `;
   } catch (error) {
