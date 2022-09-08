@@ -1,85 +1,94 @@
-const timeBody = document.querySelector(".time-body");
-const authorName = document.querySelector("#authorName");
-const cryptoImage = document.querySelector(".crypto-image");
-const cryptoName = document.querySelector(".crypto-name");
-const cryptoHeader = document.querySelector(".crypto-header");
-const cryptoMarket = document.querySelector(".crypto-market");
-const weatherSection = document.querySelector(".weather-section");
+import { getElement } from "./utility/getElement.js";
+import { getBackground } from "./getBackground.js";
+import { getCrypto } from "./getCrypto.js";
+import { getTime } from "./utility/getTime.js";
+import { getWeather } from "./getWeather.js";
+
+const timeSection = getElement(".time-section");
+const authorSection = getElement(".author-section");
+const cryptoSection = getElement(".crypto-section");
+const weatherSection = getElement(".weather-section");
 
 const imageURL =
   "https://apis.scrimba.com/unsplash/photos/random?orientation=landscape&query=donut";
 const cryptoURL = "https://api.coingecko.com/api/v3/coins/bitcoin";
 const weatherURL = "https://apis.scrimba.com/openweathermap/data/2.5/weather";
 
-const fetchBackground = async () => {
-  const resp = await fetch(imageURL);
-  const data = await resp.json();
-  return data;
-};
-const getCrypto = async () => {
-  const resp = await fetch(cryptoURL);
-  if (resp.ok) {
-    const data = await resp.json();
-    return data;
-  } else {
-    throw new Error("error while fetching from gecko");
-  }
-};
+// const getBackground = async () => {
+//   const resp = await fetch(imageURL);
+//   const data = await resp.json();
+//   return data;
+// };
+// const getCrypto = async () => {
+//   const resp = await fetch(cryptoURL);
+//   if (resp.ok) {
+//     const data = await resp.json();
+//     return data;
+//   } else {
+//     throw new Error("error while fetching from gecko");
+//   }
+// };
 
-const getTime = () => {
-  const newDate = new Date();
-  const currentTime = newDate.toLocaleTimeString("sk-SK");
-  timeBody.textContent = currentTime;
-};
+// const getTime = () => {
+//   const newDate = new Date();
+//   const currentTime = newDate.toLocaleTimeString("sk-SK");
+//   timeSection.textContent = currentTime;
+// };
 
-const getLocation = () => {
-  return new Promise((resolved, rejected) => {
-    navigator.geolocation.getCurrentPosition(resolved);
-  });
-};
-const getCoords = async () => {
-  const location = await getLocation();
-  const { latitude, longitude } = location.coords;
-  return { latitude, longitude };
-};
+// const getLocation = () => {
+//   return new Promise((resolved, rejected) => {
+//     navigator.geolocation.getCurrentPosition(resolved);
+//   });
+// };
+// const getCoords = async () => {
+//   const location = await getLocation();
+//   const { latitude, longitude } = location.coords;
+//   return { latitude, longitude };
+// };
 
-const getWeather = async () => {
-  const coordsData = await getCoords();
-  const resp = await fetch(
-    `${weatherURL}?lat=${coordsData.latitude}&lon=${coordsData.longitude}&units=metric`
-  );
-  const data = await resp.json();
-  const { name: city } = data;
-  const { temp } = data.main;
-  const { main, description, icon } = data.weather[0];
-  return { main, description, icon, city, temp };
-};
+// const getWeather = async () => {
+//   const coordsData = await getCoords();
+//   const resp = await fetch(
+//     `${weatherURL}?lat=${coordsData.latitude}&lon=${coordsData.longitude}&units=metric`
+//   );
+//   const data = await resp.json();
+//   const { name: city } = data;
+//   const { temp } = data.main;
+//   const { main, description, icon } = data.weather[0];
+//   return { main, description, icon, city, temp };
+// };
 
 const updateDOM = async () => {
   try {
-    const imageData = await fetchBackground();
+    const imageData = await getBackground();
     const cryptoData = await getCrypto();
     const weatherData = await getWeather();
 
     //handling background image
     document.body.style.backgroundImage = `url(${imageData.urls.regular})`;
-    authorName.textContent = `Image credit: ${imageData.user.name}`;
+    authorSection.textContent = `Image credit: ${imageData.user.name}`;
 
-    //handling crypto header (crypto logo+crypto title)
-    cryptoHeader.innerHTML = `
-    <img src="${cryptoData.image.small}" alt="${cryptoData.name}" class="crypto-image" />
-    <h4 class="crypto-name">${cryptoData.name}</h4>
-    `;
-
-    //handling crypto market prices
-    cryptoMarket.innerHTML = `
-    <p>current price: ${cryptoData.market_data.current_price.eur}</p>
-    <p>price high : ${cryptoData.market_data.high_24h.eur}</p>
-    <p>price low : ${cryptoData.market_data.low_24h.eur}</p>
+    //handling crypto-section
+    cryptoSection.innerHTML = `
+    <div class="crypto-header">
+      <img
+        src="${cryptoData.image.small}"
+        alt="${cryptoData.name}"
+        class="crypto-image"
+      />
+      <h4 class="crypto-name">${cryptoData.name}</h4>
+    </div>
+    <div class="crypto-market">
+      <p>current price: ${cryptoData.market_data.current_price.eur}</p>
+      <p>price high : ${cryptoData.market_data.high_24h.eur}</p>
+      <p>price low : ${cryptoData.market_data.low_24h.eur}</p>
+    </div>
     `;
 
     //update Time DOM
-    setInterval(getTime, 1000);
+    setInterval(() => {
+      timeSection.textContent = getTime();
+    }, 1000);
 
     //handling weather
     weatherSection.innerHTML = `

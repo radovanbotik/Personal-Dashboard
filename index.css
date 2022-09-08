@@ -29,7 +29,7 @@ main {
   display: flex;
   justify-content: space-between;
 }
-.time-body {
+.time-section {
   align-self: center;
 }
 
