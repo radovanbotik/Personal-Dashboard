@@ -47,11 +47,21 @@ const getCoords = async () => {
   return { latitude, longitude };
 };
 
-getCoords();
+const getWeather = async () => {
+  const coordsData = await getCoords();
+  const resp = await fetch(
+    `${weatherURL}?lat=${coordsData.latitude}&lon=${coordsData.longitude}&units=metric`
+  );
+  const data = await resp.json();
+  console.log(data);
+};
+
+getWeather();
 const updateDOM = async () => {
   try {
     const imageData = await fetchBackground();
     const cryptoData = await getCrypto();
+    // const getWeather = await getCoords();
     //handling background image
     document.body.style.backgroundImage = `url(${imageData.urls.regular})`;
     authorName.textContent = `Image credit: ${imageData.user.name}`;
