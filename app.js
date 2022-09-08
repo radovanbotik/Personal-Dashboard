@@ -50,8 +50,9 @@ const getWeather = async () => {
   );
   const data = await resp.json();
   const { name: city } = data;
+  const { temp } = data.main;
   const { main, description, icon } = data.weather[0];
-  return { main, description, icon, city };
+  return { main, description, icon, city, temp };
 };
 
 const updateDOM = async () => {
@@ -84,10 +85,13 @@ const updateDOM = async () => {
     weatherSection.innerHTML = `
     <header class='weather-header'>
     <img src='http://openweathermap.org/img/wn/${weatherData.icon}@2x.png' class="weather-icon"></img>
+    <div class="weather-temperature">${weatherData.temp}°C</div>
     <div class="weather-main">${weatherData.main}</div>
     </header>
-    <div class="weather-description">${weatherData.description}</div>
+    <footer class='weather-footer'>
     <div class="weather-city">${weatherData.city}</div>
+    <div class="weather-description">${weatherData.description}</div>
+    </footer>
     `;
   } catch (error) {
     document.body.style.backgroundImage =
