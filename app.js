@@ -1,6 +1,9 @@
+const timeBody = document.querySelector(".time-body");
 const authorName = document.querySelector("#authorName");
 const cryptoImage = document.querySelector(".crypto-image");
 const cryptoName = document.querySelector(".crypto-name");
+const cryptoHeader = document.querySelector(".crypto-header");
+const cryptoMarket = document.querySelector(".crypto-market");
 
 const imageURL =
   "https://apis.scrimba.com/unsplash/photos/random?orientation=landscape&query=donut";
@@ -15,21 +18,41 @@ const fetchCrypto = async () => {
   const resp = await fetch(cryptoURL);
   if (resp.ok) {
     const data = await resp.json();
-    console.log(data.name, data.image.small);
+    console.log(data.market_data);
     return data;
   } else {
     throw new Error("error while fetching from gecko");
   }
 };
 
+const getTime = () => {
+  const newDate = new Date();
+  const currentTime = newDate.toLocaleTimeString("sk-SK");
+  return currentTime;
+};
+
 const updateDOM = async () => {
   try {
     const imageData = await fetchBackground();
     const cryptoData = await fetchCrypto();
+    //handling background image
     document.body.style.backgroundImage = `url(${imageData.urls.regular})`;
     authorName.textContent = `Image credit: ${imageData.user.name}`;
-    cryptoImage.src = cryptoData.image.small;
-    cryptoName.textContent = cryptoData.name;
+    //handling crypto header (crypto logo+crypto title)
+    cryptoHeader.innerHTML = `
+    <img src="${cryptoData.image.small}" alt="${cryptoData.name}" class="crypto-image" />
+    <h4 class="crypto-name">${cryptoData.name}</h4>
+    `;
+    //handling crypto market prices
+    cryptoMarket.innerHTML = `
+    <p>current price: ${cryptoData.market_data.current_price.eur}</p>
+    <p>price high : ${cryptoData.market_data.high_24h.eur}</p>
+    <p>price low : ${cryptoData.market_data.low_24h.eur}</p>
+    `;
+    //update Time DOM
+    setInterval(() => {
+      timeBody.textContent = getTime();
+    }, 1000);
   } catch (error) {
     document.body.style.backgroundImage =
       'url("https://images.unsplash.com/photo-1593445203635-af51d171f25e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxNDI0NzB8MHwxfHJhbmRvbXx8fHx8fHx8fDE2NjI1NjA0NTg&ixlib=rb-1.2.1&q=80&w=1080")';

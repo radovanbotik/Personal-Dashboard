@@ -21,16 +21,29 @@ main {
   flex-direction: column;
   justify-content: space-between;
 }
-.appHeader {
+.dashboard-header {
   display: flex;
   justify-content: space-between;
 }
-.time {
+.time-body {
   align-self: center;
 }
-.crypto-holder {
+.crypto-section {
+  padding: 1em;
+}
+.crypto-header {
   display: flex;
+  align-items: center;
 }
 .crypto-image {
-  height: 50px;
+  height: 40px;
+}
+.crypto-name {
+  flex-grow: 1;
+  text-align: center;
+}
+.crypto-market {
+  display: flex;
+  flex-direction: column;
+  line-height: 0;
 }
