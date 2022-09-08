@@ -4,6 +4,7 @@ const cryptoImage = document.querySelector(".crypto-image");
 const cryptoName = document.querySelector(".crypto-name");
 const cryptoHeader = document.querySelector(".crypto-header");
 const cryptoMarket = document.querySelector(".crypto-market");
+const weatherSection = document.querySelector(".weather-section");
 
 const imageURL =
   "https://apis.scrimba.com/unsplash/photos/random?orientation=landscape&query=donut";
@@ -53,14 +54,16 @@ const getWeather = async () => {
     `${weatherURL}?lat=${coordsData.latitude}&lon=${coordsData.longitude}&units=metric`
   );
   const data = await resp.json();
-  console.log(data);
+  const { main, description, icon } = data.weather[0];
+
+  return { main, description, icon };
 };
 
-getWeather();
 const updateDOM = async () => {
   try {
     const imageData = await fetchBackground();
     const cryptoData = await getCrypto();
+    const weatherData = await getWeather();
     // const getWeather = await getCoords();
     //handling background image
     document.body.style.backgroundImage = `url(${imageData.urls.regular})`;
@@ -80,7 +83,12 @@ const updateDOM = async () => {
     setInterval(getTime, 1000);
     //handle user location
 
-    // const weather = getWeather(getLocation);
+    //handle weather
+    weatherSection.innerHTML = `
+    <div class="weather-icon">${weatherData.main}</div>
+    <div class="weather-main">${weatherData.description}</div>
+    <div class="weather-description">${weatherData.icon}</div>
+    `;
   } catch (error) {
     document.body.style.backgroundImage =
       'url("https://images.unsplash.com/photo-1593445203635-af51d171f25e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxNDI0NzB8MHwxfHJhbmRvbXx8fHx8fHx8fDE2NjI1NjA0NTg&ixlib=rb-1.2.1&q=80&w=1080")';

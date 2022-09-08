@@ -21,6 +21,10 @@ main {
   flex-direction: column;
   justify-content: space-between;
 }
+.section {
+  padding: 1em;
+}
+
 .dashboard-header {
   display: flex;
   justify-content: space-between;
@@ -28,9 +32,7 @@ main {
 .time-body {
   align-self: center;
 }
-.crypto-section {
-  padding: 1em;
-}
+
 .crypto-header {
   display: flex;
   align-items: center;
@@ -46,4 +48,8 @@ main {
   display: flex;
   flex-direction: column;
   line-height: 0;
+}
+.weather-section {
+  display: flex;
+  flex-direction: column;
 }
