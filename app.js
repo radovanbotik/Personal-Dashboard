@@ -83,7 +83,7 @@ const updateDOM = async () => {
     //handling weather
     weatherSection.innerHTML = `
     <header class='weather-header'>
-    <img src='http://openweathermap.org/img/wn/${weatherData.icon}.png' class="weather-icon"></img>
+    <img src='http://openweathermap.org/img/wn/${weatherData.icon}@2x.png' class="weather-icon"></img>
     <div class="weather-main">${weatherData.main}</div>
     </header>
     <div class="weather-description">${weatherData.description}</div>
