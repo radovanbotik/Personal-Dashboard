@@ -32,11 +32,6 @@ const getTime = () => {
   timeBody.textContent = currentTime;
 };
 
-// const getLocation = navigator.geolocation.getCurrentPosition(position => {
-//   const { latitude, longitude } = position.coords;
-//   return position.coords;
-// });
-
 const getLocation = () => {
   return new Promise((resolved, rejected) => {
     navigator.geolocation.getCurrentPosition(resolved);
@@ -64,30 +59,35 @@ const updateDOM = async () => {
     const imageData = await fetchBackground();
     const cryptoData = await getCrypto();
     const weatherData = await getWeather();
-    // const getWeather = await getCoords();
+
     //handling background image
     document.body.style.backgroundImage = `url(${imageData.urls.regular})`;
     authorName.textContent = `Image credit: ${imageData.user.name}`;
+
     //handling crypto header (crypto logo+crypto title)
     cryptoHeader.innerHTML = `
     <img src="${cryptoData.image.small}" alt="${cryptoData.name}" class="crypto-image" />
     <h4 class="crypto-name">${cryptoData.name}</h4>
     `;
+
     //handling crypto market prices
     cryptoMarket.innerHTML = `
     <p>current price: ${cryptoData.market_data.current_price.eur}</p>
     <p>price high : ${cryptoData.market_data.high_24h.eur}</p>
     <p>price low : ${cryptoData.market_data.low_24h.eur}</p>
     `;
+
     //update Time DOM
     setInterval(getTime, 1000);
 
     //handling weather
     weatherSection.innerHTML = `
-    <div class="weather-icon">${weatherData.main}</div>
-    <div class="weather-main">${weatherData.description}</div>
-    <div class="weather-description">${weatherData.city}</div>
-    <div class="weather-description">${weatherData.icon}</div>
+    <header class='weather-header'>
+    <img src='http://openweathermap.org/img/wn/${weatherData.icon}.png' class="weather-icon"></img>
+    <div class="weather-main">${weatherData.main}</div>
+    </header>
+    <div class="weather-description">${weatherData.description}</div>
+    <div class="weather-city">${weatherData.city}</div>
     `;
   } catch (error) {
     document.body.style.backgroundImage =
